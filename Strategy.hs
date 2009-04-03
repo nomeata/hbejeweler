@@ -38,7 +38,7 @@ instance Game_tree (GameSituation, Maybe Move) where
                   -- (if We == turn gs then id else negate) $
                   playerValue (atTurn gs) - playerValue (opponent gs)
     where playerValue (PlayerStats h s r y g p) | h <= 0    = -2000
-                                                | otherwise = 60 * h + 15 * s -- + 10 * r + 6 * y + 3 * g
+                                                | otherwise = 60 * h + 15 * s + 10 * r + 6 * y + 3 * g
 		   
 chooseMove :: GameSituation -> Move
 chooseMove gs = fromJust $ snd $ head $ tail $ fst $ negascout (gs, Nothing) depth
