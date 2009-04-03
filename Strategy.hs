@@ -31,8 +31,8 @@ instance Game_tree GameSituation where
                    || hitpoints (opponent gs) <= 0
                    || null (children gs)
   children gs = [ applyMove move gs | move <- possibleMoves (gameField gs) ]
-  node_value gs = (if even depth then id else negate) $ -- work around bug in game-tree?
-                  (if We == turn gs then id else negate) $
+  node_value gs = --(if even depth then id else negate) $ -- work around bug in game-tree?
+                  --(if We == turn gs then id else negate) $
                   playerValue (atTurn gs) - playerValue (opponent gs)
     where playerValue (PlayerStats h s r y g p) | h <= 0    = -200
                                                 | otherwise = 5 * h + s
