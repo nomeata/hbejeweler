@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 -- | Contestant for the Freies Magazin programming contest.
 -- Copyright 2009 Joachim Breitner
 --
@@ -21,25 +23,24 @@ module Strategy where
 import Data
 import Data.List
 import Data.Ord
+import Data.Maybe
 import Data.Tree.Game_tree.Game_tree
 import Data.Tree.Game_tree.Negascout
 
 depth = 2
 
-instance Game_tree GameSituation where
-  is_terminal gs =    hitpoints (atTurn gs) <= 0
+instance Game_tree (GameSituation, Maybe Move) where
+  is_terminal t@(gs,_) =    hitpoints (atTurn gs) <= 0
                    || hitpoints (opponent gs) <= 0
-                   || null (children gs)
-  children gs = [ applyMove move gs | move <- possibleMoves (gameField gs) ]
-  node_value gs = --(if even depth then id else negate) $ -- work around bug in game-tree?
-                  --(if We == turn gs then id else negate) $
+                   || null (children t)
+  children (gs,_) = [ (applyMove move gs, Just move) | move <- possibleMoves (gameField gs) ]
+  node_value (gs,_) = -- (if even depth then id else negate) $ -- work around bug in game-tree?
+                  -- (if We == turn gs then id else negate) $
                   playerValue (atTurn gs) - playerValue (opponent gs)
-    where playerValue (PlayerStats h s r y g p) | h <= 0    = -200
-                                                | otherwise = 5 * h + s
+    where playerValue (PlayerStats h s r y g p) | h <= 0    = -2000
+                                                | otherwise = 60 * h + 15 * s -- + 10 * r + 6 * y + 3 * g
 		   
 chooseMove :: GameSituation -> Move
-chooseMove gs = fst $ maximumBy (comparing snd) $
-                [ (move, snd (alpha_beta_search (applyMove move gs) depth))
-                  | move <- possibleMoves (gameField gs) ]
+chooseMove gs = fromJust $ snd $ head $ tail $ fst $ negascout (gs, Nothing) depth
 
 
