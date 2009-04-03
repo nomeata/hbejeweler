@@ -24,7 +24,7 @@ import Data.Ord
 import Data.Tree.Game_tree.Game_tree
 import Data.Tree.Game_tree.Negascout
 
-depth = 3
+depth = 2
 
 instance Game_tree GameSituation where
   is_terminal gs =    hitpoints (atTurn gs) <= 0
