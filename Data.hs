@@ -66,9 +66,6 @@ saveMove :: String -> Move -> IO ()
 saveMove filename ((x1,y1), (x2,y2)) =
 	writeFile filename $ unwords $ map show $ [y1,x1,y2,x2]
 
-flipTurn We = They
-flipTurn They = We
-
 applyMove :: Move -> GameSituation -> GameSituation
 applyMove move gs = GameSituation turn' atTurn' opponent' gameField'
   where	flippedGameField = flipStones (gameField gs) move
@@ -120,6 +117,9 @@ countStones seq@(Colored Yellow:_) ps = ps { collectedYellow = length seq + coll
 countStones seq@(Colored Purple:_) ps = ps { collectedPurple = length seq + collectedPurple ps }
 countStones seq@(Colored Blue:_) ps = ps { shield = min 15 $ shield ps + length seq }
 countStones _ ps = ps -- ignore bombs
+
+flipTurn We = They
+flipTurn They = We
 
 combineable (Colored c) (Colored c') = c == c'
 combineable (Bomb _) (Bomb _) = True
