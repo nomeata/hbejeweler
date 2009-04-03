@@ -24,6 +24,8 @@ import Data.Ord
 import Data.Tree.Game_tree.Game_tree
 import Data.Tree.Game_tree.Negascout
 
+depth = 3
+
 instance Game_tree GameSituation where
   is_terminal gs =    hitpoints (atTurn gs) <= 0
                    || hitpoints (opponent gs) <= 0
@@ -36,7 +38,7 @@ instance Game_tree GameSituation where
 		   
 chooseMove :: GameSituation -> Move
 chooseMove gs = fst $ maximumBy (comparing snd) $
-                [ (move, snd (alpha_beta_search (applyMove move gs) 3))
+                [ (move, snd (alpha_beta_search (applyMove move gs) depth))
                   | move <- possibleMoves (gameField gs) ]
 
 
