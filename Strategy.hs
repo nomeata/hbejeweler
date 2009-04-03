@@ -36,7 +36,7 @@ instance Game_tree GameSituation where
 		   
 chooseMove :: GameSituation -> Move
 chooseMove gs = fst $ maximumBy (comparing snd) $
-                [ (move, snd (alpha_beta_search (applyMove move gs) 2))
+                [ (move, snd (alpha_beta_search (applyMove move gs) 3))
                   | move <- possibleMoves (gameField gs) ]
 
 
