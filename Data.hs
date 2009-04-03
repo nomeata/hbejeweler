@@ -82,7 +82,10 @@ flipStones gf (i1,i2) = gf // [(i1, gf ! i2),(i2, gf ! i1)]
 possibleMoves gf = filter works $ filter valid $ allMoves
   where allMoves = concat [ [((i,j),(i+1,j)), ((i,j),(i,j+1))] | (i,j) <- range ((0,0),(9,9)) ]
         valid (_,(i,j)) = i < 10 && j < 10 -- first coordinate is always correct
-	works = not . null . indexedTiles . flipStones gf 
+	works move@(i1,i2) = let gf' = flipStones gf move in  lookAround i1 gf' || lookAround i2 gf'
+        lookAround (i,j) gf' = any ((>=3).length) $
+		(groupBy combineable $ [ gf' ! (i',j) | i' <- range (max 0 (i-2), min 9 (i+2)) ]) ++
+ 		(groupBy combineable $ [ gf' ! (i,j') | j' <- range (max 0 (j-2), min 9 (j+2)) ])
         
 
 removeTiles :: GameField -> [[Stone]] -> (GameField, [[Stone]])
