@@ -139,9 +139,3 @@ stoneChars = [("R", Colored Red),("Y",Colored Yellow),
               [(show i, Bomb i) | i <- [1..5]]
 
 flipTuple (x,y) = (y,x)
-
-test = do
-	p1 <- readPlayerDat "../wettbewerb/player.dat"
-	p2 <- readPlayerDat "../wettbewerb/opponent.dat"
-	f <-  readGamefieldDat "../wettbewerb/gamefield.dat"
-	return $ GameSituation We p1 p2 f
