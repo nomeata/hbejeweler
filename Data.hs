@@ -91,7 +91,7 @@ possibleMoves gf = filter works $ filter valid $ allMoves
 removeTiles :: GameField -> [[Stone]] -> (GameField, [[Stone]])
 removeTiles field sequences =
         let indexed = indexedTiles field
-	    removedIndizes = map fst $ concat indexed
+	    removedIndizes = nub $ map fst $ concat indexed
 	    sequences' = map (map snd) $ indexed
 	    field' = foldr dropTiles field removedIndizes
 	in if null indexed then (field, sequences)
