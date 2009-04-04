@@ -33,14 +33,18 @@ instance Game_tree (GameSituation, Maybe Move) where
   is_terminal t@(gs,_) =    hitpoints (atTurn gs) <= 0
                    || hitpoints (opponent gs) <= 0
                    || null (children t)
-  children (gs,_) = [ (applyMove move gs, Just move) | move <- possibleMoves (gameField gs) ]
+  children (gs,_) = concatMap (repeatMove gs) $
+                    [ (applyMove move gs, Just move) | move <- possibleMoves (gameField gs) ]
   node_value (gs,_) = -- (if even depth then id else negate) $ -- work around bug in game-tree?
                   -- (if We == turn gs then id else negate) $
                   playerValue (atTurn gs) - playerValue (opponent gs)
     where playerValue (PlayerStats h s r y g p) | h <= 0    = -2000
                                                 | otherwise = 60 * h + 15 * s + 10 * r + 6 * y + 3 * g
-		   
+
+repeatMove (GameSituation { turn = t }) (gs,mm)
+	| turn gs == t = concatMap (repeatMove gs) $
+                         [ (applyMove move gs, mm) | move <- possibleMoves (gameField gs) ]
+        | otherwise    = [(gs,mm)]
+
 chooseMove :: GameSituation -> Move
 chooseMove gs = fromJust $ snd $ head $ tail $ fst $ negascout (gs, Nothing) depth
-
-
