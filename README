@@ -1,0 +1,15 @@
+hbejeweler
+==========
+
+This is an entry for the programming competition called for
+by the Freies Magazin at http://www.freiesmagazin.de/programmierwettbewerb
+by Joachim Breitner <mail@joachim-breitner.de>. The code is
+licenced under the terms of the GPL, version two or later.
+
+It is implemented in Haskell and uses the game-tree library
+from Colin Adams. It is bundled with the library for your
+convenience.
+
+To build the program, run the build.sh script. It requires
+an installation of the ghc6 Haskell compiler. This generates
+the binary “hbejeweler”.
