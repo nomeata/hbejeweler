@@ -2,9 +2,11 @@
 
 # simple tarball creator
 
-tar --verbose --create --file hbejeweler.tar.gz --gzip \
-	README \
-	build.sh \
-	*.hs \
-	game-tree-0.1.0.0
+cd ..
+test -d hbejeweler || { echo did not find hbejeweler; exit 1; }
+tar --verbose --create --file hbejeweler/hbejeweler.tar.gz --gzip \
+	hbejeweler/README \
+	hbejeweler/build.sh \
+	hbejeweler/*.hs \
+	hbejeweler/game-tree-0.1.0.0
 
