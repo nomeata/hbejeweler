@@ -27,7 +27,7 @@ import Data.Maybe
 import Data.Tree.Game_tree.Game_tree
 import Data.Tree.Game_tree.Negascout
 
-depth = 2
+depth = 3
 
 instance Game_tree (GameSituation, Maybe Move) where
   is_terminal t@(gs,_) =    hitpoints (atTurn gs) <= 0
