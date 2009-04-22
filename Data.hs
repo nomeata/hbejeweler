@@ -129,7 +129,14 @@ removeTiles field sequences =
 indexedTiles field = concatMap findInteresting $ rows ++ cols
   where rows = [ [ ((i,j),field ! (i,j)) | i <- range (0,9)] | j <- range (0,9) ]
 	cols = [ [ ((i,j),field ! (i,j)) | j <- range (0,9)] | i <- range (0,9) ]
-        findInteresting = filter ((>=3).length) . groupBy (combineable `on` snd)
+        findInteresting = filterChains . groupBy (combineable `on` snd)
+
+{- filterChains = filter((>=3).length), but optimized -}
+filterChains [] = []
+filterChains ([]:xs) = filterChains xs
+filterChains ([_]:xs) = filterChains xs
+filterChains ([_,_]:xs) = filterChains xs
+filterChains (x:xs) = x:filterChains xs
 
 attack ps@(PlayerStats
         { collectedRed = r, collectedYellow = y, collectedGreen = g, collectedPurple = p }) =
